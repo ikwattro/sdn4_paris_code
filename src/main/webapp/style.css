@@ -1,0 +1,145 @@
+html, body {
+	min-height: 100%;
+}
+@font-face {
+    font-family: 'obelixproregular';
+    src: url('fonts/obelixpro-cyr-webfont.eot');
+    src: url('fonts/obelixpro-cyr-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/obelixpro-cyr-webfont.woff2') format('woff2'),
+         url('fonts/obelixpro-cyr-webfont.woff') format('woff'),
+         url('fonts/obelixpro-cyr-webfont.ttf') format('truetype'),
+         url('fonts/obelixpro-cyr-webfont.svg#obelixproregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+a:hover {
+	text-decoration: none;
+}
+body {
+    padding-top: 100px;
+	background: url('images/bg.jpg') no-repeat center center;
+	background-size: cover;
+	background-attachment: fixed;
+}
+.container {
+	max-width: 540px;
+}
+h1, .results h4, .details h2, .details h3 {
+	font-family: 'obelixproregular';
+	color: #92278F;
+}
+h1 {
+	font-size: 24px;
+}
+h2 {
+	font-size: 20px;
+}
+.panel {
+	border: 1px solid #ccc;
+	box-shadow: none;
+}
+.panel h2, .panel h3 {
+	margin: 0;
+}
+.details h3 {
+	font-size: 16px;
+}
+.input-group .dropdown-toggle {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+.input-group-lg .btn .glyphicon {
+	margin-top: 2px;
+}
+.input-holder {
+	margin: 20px 0;
+}
+.list-group-item .glyphicon {
+	margin-right: 6px;
+}
+.badge {
+	background-color: #5bc0de;
+}
+.panel-body .thumb {
+	width: 100px;
+	height: 70px;
+	background: whitesmoke;
+	float: left;
+	margin-right: 15px;
+	margin-top: -15px;
+	margin-left: -15px;
+	margin-bottom: -15px;
+}
+.panel-body p {
+	margin: 0;
+}
+.profilepic {
+	background: url('images/bg-profile.jpg') no-repeat center center;
+	background-size: cover;
+	min-height: 120px;
+	position: relative;
+}
+.profilepic .blur {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.results {
+	margin-top: 40px;
+}
+.results h4 {
+	font-size: 14px;
+	line-height: 18px;
+}
+.media {
+	margin-bottom: 20px;
+}
+.media img {
+	width: 120px;
+	margin-right: 10px;
+}
+.ally, .enemy {
+	background: whitesmoke;
+	height: 40px;
+	border-right: 4px solid white;
+}
+img.profile {
+	width: 170px;
+	border-radius:100%;
+}
+ul.list-group {
+	margin-bottom: 0;
+}
+.btn-primary {
+	background: #35A0CE;
+}
+.footer {
+	padding: 50px 0 50px 0;
+	background: url('images/icon-graphaware-color.svg') no-repeat center top;
+	background-size: 40px auto;
+	margin-top: 80px;
+}
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 400px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 400px;
+    }
+}
+
+@media screen and (min-height: 400px) {
+	.hp .footer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+	}
+}

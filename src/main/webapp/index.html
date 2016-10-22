@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Superhero Search</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="container">
+	<div class="col-xs-12 text-center">
+		<a href="/"><h1>Superhero Graph Search</h1></a>
+	</div>
+
+	<form method="get" action="index.html">
+		<input type="hidden" name="hero-type">
+		<div class="col-xs-12 input-holder">
+			<div class="input-group input-group-lg">
+				<input id="search-text" name="q" type="text" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Search...">
+				<div class="input-group-btn">
+
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li><a href="#">All</a></li>
+						<li><a href="#">Heroes</a></li>
+						<li><a href="#">Villains</a></li>
+					</ul>
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+</div>
+
+<!-- Results start here -->
+<div id="search-results" class="container results">
+<div class="col-xs-12">
+</div>
+
+
+</div>
+<!-- End results -->
+
+
+	
+<div class="footer container">
+
+<div class="col-xs-12 text-center">
+<small>Created by GraphAware. Powered by Spring Data Neo4j 4.1</small>
+</div>
+
+</div>
+  
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.loadTemplate-1.5.7.min.js"></script>
+<script src="js/search.js"></script>
+
+<script>
+	$(function() {
+		var q = getParameterByName('q', window.location.href);
+		var heroType = getParameterByName('hero-type', window.location.href);
+		if (q!=null) {
+			$('#search-text').val(q);
+			doSearch(q, heroType);
+		}
+	});
+</script>
+</body>
+</html>

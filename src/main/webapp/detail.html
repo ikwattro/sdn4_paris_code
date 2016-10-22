@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Detail</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="details">
+
+<div class="container">
+  <div class="col-xs-12 text-center">
+    <a href="/"><h1>Superhero Graph Search</h1></a>
+  </div>
+
+  <form method="get" action="index.html">
+    <div class="col-xs-12 input-holder">
+      <div class="input-group input-group-lg">
+        <input name="q" type="text" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Search...">
+        <div class="input-group-btn">
+
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#">All</a></li>
+            <li><a href="#">Heroes</a></li>
+            <li><a href="#">Villains</a></li>
+          </ul>
+          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+<div class="col-xs-12">
+
+<div class="panel panel-default">
+  <div id="profile-pic" class="panel-heading profilepic">
+    <img src="" alt="..." class="img-thumbnail center-block">
+  </div>
+  <div class="panel-body">
+  	<h2 class="text-center" id="name"></h2>
+  </div>
+  
+  <ul class="list-group">
+  
+    <li class="list-group-item">
+      <span id="bio">
+        <b>Alias</b>: Dark Knight<br>
+        <b>Real name</b>: Bruce Wayne<br>
+        <b>Teams:</b> Justice League
+      </span>
+    </li>
+	  
+    <li class="list-group-item">
+	  <div class="row">
+	    <div class="col-xs-6" id="allies">
+	      <b>Allies</b><br>
+          <span></span>
+        </div>
+	  
+	    <div class="col-xs-6" id="enemies">
+	      <b>Enemies</b><br>
+          <span></span>
+	    </div>
+	  </div>
+	 
+    </li>
+	
+    <a href="#collapseMovies" data-toggle="collapse"><li class="list-group-item"><span class="glyphicon glyphicon-film" aria-hidden="true"></span><b>Movies</b> <span class="badge label-info" id="movies-count"></span></li></a>
+	<div class="collapse" id="collapseMovies">
+	<ul class="list-group" id="movies"></ul>
+	</div>
+    <a href="#collapseGames" data-toggle="collapse"><li class="list-group-item"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span><b>Games</b> <span class="badge" id="games-count"></span></li></a>
+	<div class="collapse" id="collapseGames">
+	<ul class="list-group" id="games"></ul>
+	</div>
+    <a href="#collapseBooks" data-toggle="collapse"><li class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span><b>Comics</b> <span class="badge" id="comics-count"></span></li></a>
+	<div class="collapse" id="collapseBooks">
+	<ul class="list-group" id="comics"></ul>
+	</div>
+  </ul>
+  
+</div>
+
+<h3 class="text-center">Related heroes</h3>
+
+<a href="detail.html">
+<div id="related-heroes">
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+<div class="col-xs-12 text-center">
+<small>Created by GraphAware. Powered by Spring Data Neo4j 4.1</small>
+</div>
+
+</div>
+
+<div id="generic-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Modal title</h3>
+      </div>
+      <div class="modal-body">
+        <p></p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+<script src="js/scripts.js"></script>
+
+<script src="js/jquery.loadTemplate-1.5.7.min.js"></script>
+<script src="js/JSOG.js"></script>
+<script src="js/search.js"></script>
+
+<script>
+  function showGenericModal(title, body) {
+    var gm = $('#generic-modal');
+    gm.find('.modal-title').text(title);
+    gm.find('.modal-body p').html(body);
+    gm.modal('show');
+  }
+
+  function populateDetails(data) {
+    var cyclicGraph = JSOG.decode(data);
+    //console.log(cyclicGraph);
+
+    $('#name').text(data.name);
+    $('#profile-pic img').attr('src', '/'+data.img);
+
+    var bio = '';
+
+    if (data.alias) bio += '<b>Alias</b>: '+data.alias+'<br/>';
+    if (data.realName) bio += ' <b>Real name</b>: '+data.realName+'<br/>';
+    if (data.teams.length >0) {
+      bio += "<br/><b>Teams:</b> ";
+      $.each(cyclicGraph.teams, function(i, team) {
+        if (i>0) bio += ", ";
+        bio += team.name;
+      });
+    }
+
+    $('#bio').html(bio);
+    $('#movies').loadTemplate($('#movie-list-item-template'), cyclicGraph.roles);
+    $('#movies-count').text(data.roles.length);
+    $('#games').loadTemplate($('#games-list-item-template'), cyclicGraph.gamesFeaturedIn);
+    $('#games-count').text(data.gamesFeaturedIn.length);
+    $('#comics').loadTemplate($('#comics-list-item-template'), cyclicGraph.comicsFeaturedIn);
+    $('#comics-count').text(data.comicsFeaturedIn.length);
+
+    var allies = new Array();
+    $.each(cyclicGraph.allies, function(i, character) {
+      allies[allies.length] = {
+        name: character.name,
+        id: character.id,
+        detailUrl: '/detail.html?id='+character.id,
+        imageUrl: '/'+character.img,
+        style: "background: url('/"+character.img+"') no-repeat center center; background-size: cover;"
+      }
+    });
+    if (allies.length) {
+      $('#allies').show();
+      $('#allies span').loadTemplate($('#thumbnail-template'), allies);
+    }
+
+    var enemies = new Array();
+    $.each(cyclicGraph.enemies, function(i, character) {
+      enemies[enemies.length] = {
+        name: character.name,
+        id: character.id,
+        detailUrl: '/detail.html?id='+character.id,
+        imageUrl: '/'+character.img,
+        style: "background: url('/"+character.img+"') no-repeat center center; background-size: cover;"
+      }
+    });
+    if (enemies.length) {
+      $('#enemies').show();
+      $('#enemies span').loadTemplate($('#thumbnail-template'), enemies);
+    }
+    $('[data-toggle="tooltip"]').tooltip()
+
+    //initialize modal triggers
+    $('li[name="list-item"]').on('click', 'a', function() {
+      var content = $(this).next(); //target the span immediately after this anchor
+      showGenericModal($(this).text(), $(content).html());
+    });
+
+  }
+
+  function fetchRelated(id) {
+    $.ajax({
+      url: '/characters/'+id+'/related'
+    })
+    .done(function(data) {
+      var cyclicGraph = JSOG.decode(data);
+      //console.log(cyclicGraph);
+
+      var relatedHeroes = new Array();
+      $.each(cyclicGraph, function(i, character) {
+        relatedHeroes[relatedHeroes.length] = {
+          name: character.name,
+          id: character.id,
+          detailUrl: '/detail.html?id='+character.id,
+          imageUrl: '/'+character.img,
+          aliases: character.alias,
+          style: "background: whitesmoke url('/"+character.img+"') no-repeat center top; background-size: cover;"
+        }
+      });
+      if (relatedHeroes.length) {
+        $('#related-heroes').show();
+        $('#related-heroes').loadTemplate('_search_results.html', relatedHeroes);
+      }
+    });
+
+  }
+
+  function initCap(str1) {
+    return str1.toLowerCase().replace(/(?:^|\s)[a-z]/g, function (m) {
+        return m.toUpperCase();
+     });
+  }
+
+  $(function() {
+    $.addTemplateFormatter({
+      dateFormatter : function(value) {
+          return new Date(value).toDateString();
+        },
+      readableString: function(value) {
+        var str;
+
+        if (Array.isArray(value)) {
+            str = value.join(', ');
+            str = initCap(str); //hacky - only platforms have arrays so we add the initCap here
+        }
+        else {
+            str = value;
+        }
+
+        return str.replace(/_/g, ' ');
+      }
+    });
+
+    $.ajax({
+      url: '/characters/'+getParameterByName('id', window.location.href)
+    })
+    .done(function(data) {
+      populateDetails(data);
+      fetchRelated(data.id);
+    });
+
+
+  });
+
+</script>
+
+<script type="text/html" id="movie-list-item-template">
+  <li class="list-group-item" name="list-item">
+    <a href="" data-toggle="modal" data-content="movie.title">Title</a>
+    <span hidden>
+      <strong>Year:</strong> <span data-content="movie.year"></span><br/>
+      <strong>Actor:</strong> <span data-content="actor"></span><br/>
+      <strong>Rating:</strong> <span data-content="movie.rating" data-format="readableString"></span><br/>
+      <br/>
+      <a href="" data-href="movie.imdbUrl">Read more at IMDb</a>
+    </span>
+  </li>
+</script>
+
+<script type="text/html" id="games-list-item-template">
+  <li class="list-group-item" name="list-item">
+    <a href="" data-toggle="modal" data-content="title">Title</a>
+    <span hidden>
+      <strong>Year:</strong> <span data-content="year"></span><br/>
+      <strong>Publisher:</strong> <span data-content="publisher"></span><br/>
+      <strong>Rating:</strong> <span data-content="rating" data-format="readableString"></span><br/>
+      <strong>Platforms:</strong> <span data-content="platforms" data-format="readableString"></span><br/>
+    </span>
+  </li>
+</script>
+
+<script type="text/html" id="comics-list-item-template">
+  <li class="list-group-item" name="list-item">
+    <a href="" data-toggle="modal" data-content="title">Title</a>
+    <span hidden>
+      <strong>Author:</strong> <span data-content="author"></span><br/>
+      <strong>Artist:</strong> <span data-content="artist"></span><br/>
+      <strong>Binding:</strong> <span data-content="binding"></span><br/>
+      <strong>Sale Date:</strong> <span data-content="onSaleDate" data-format="dateFormatter"></span><br/>
+    </span>
+  </li>
+</script>
+
+<script type="text/html" id="thumbnail-template">
+
+  <a href="detail.html" data-href="detailUrl"
+     class="ally col-xs-3" data-toggle="tooltip" data-placement="bottom"
+     title="Batman"
+     style="background: no-repeat center center; background-size: cover;"
+     data-template-bind='[{"attribute":"title", "value":"name"}, {"attribute":"style", "value":"style"}]'>
+  </a>
+</script>
+
+</body>
+</html>
